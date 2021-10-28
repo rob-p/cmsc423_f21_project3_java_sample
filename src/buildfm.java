@@ -32,8 +32,8 @@ public class buildfm {
 		ObjectOutputStream out = null;
 		try {
 			out = new ObjectOutputStream(new FileOutputStream(output));
-			out.writeUTF(genome);
 			out.writeObject(sa);
+			out.writeBytes(genome);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -48,14 +48,23 @@ public class buildfm {
 
 		// Below is how the serialized file would be
 		// read in.
-		/*
+	 	/*	
 		ObjectInputStream in = null;
 		String genome_in = null;
 		int[] sa_in = null;
 		try {
 			in = new ObjectInputStream(new FileInputStream(output));
-			genome_in = in.readUTF();
 			sa_in = (int[]) in.readObject();
+			if (!java.util.Arrays.equals(sa_in, sa)) {
+				System.out.println("suffix arrays don't match");
+			}
+			byte[] genomeBytes = new byte[sa_in.length];
+			in.readFully(genomeBytes);
+			genome_in = new String(genomeBytes);
+			if (!genome_in.equals(genome)) {
+				System.out.println("genomes don't match");
+			}
+			System.out.println("all matched!");
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -68,6 +77,7 @@ public class buildfm {
 			}
 		}
 		*/
+		
 	}
 	
 }
